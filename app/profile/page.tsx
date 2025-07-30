@@ -101,10 +101,25 @@ export default function ProfilePage() {
       </div>
     );
   }
-
   return (
-    <div className="min-h-screen theme-bg pt-20 pb-12">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen theme-bg pt-20 pb-12 relative">
+      {/* Blurred background image */}
+      <div 
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: 'url(/images/gif2.gif)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+          filter: 'blur(3px)'
+        }}
+      ></div>
+      
+      {/* Dark overlay to maintain readability */}
+      <div className="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
+      
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
@@ -125,10 +140,9 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Profile Information */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">          {/* Profile Information */}
           <div className="lg:col-span-2">
-            <div className="theme-bg border theme-border p-6">
+            <div className="theme-bg/80 backdrop-blur-md border theme-border/50 p-6 shadow-lg">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold theme-text font-mono">
                   [PROFILE_INFORMATION]
@@ -236,11 +250,9 @@ export default function ProfilePage() {
                 </div>
               )}
             </div>
-          </div>
-
-          {/* Quick Actions */}
+          </div>          {/* Quick Actions */}
           <div className="space-y-6">
-            <div className="theme-bg border theme-border p-6">
+            <div className="theme-bg/80 backdrop-blur-md border theme-border/50 p-6 shadow-lg">
               <h3 className="text-lg font-bold theme-text font-mono mb-4">
                 [QUICK_ACTIONS]
               </h3>
@@ -268,9 +280,7 @@ export default function ProfilePage() {
                   [LOGOUT]
                 </button>
               </div>
-            </div>
-
-            <div className="theme-bg border theme-border p-6">
+            </div>            <div className="theme-bg/80 backdrop-blur-md border theme-border/50 p-6 shadow-lg">
               <h3 className="text-lg font-bold theme-text font-mono mb-4">
                 [ACCOUNT_STATUS]
               </h3>
