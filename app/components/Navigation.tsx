@@ -107,12 +107,14 @@ export default function Navigation() {
             </Link>
             <Link href="/cart" className="theme-text hover:theme-text-secondary transition-all duration-200 font-mono hover:scale-105 transform">
               [CART]
-            </Link>
-            {isLoggedIn ? (
+            </Link>            {isLoggedIn ? (
               <div className="flex items-center space-x-4">
-                <span className="text-sm theme-text-secondary font-mono">
+                <Link 
+                  href="/profile" 
+                  className="text-sm theme-text-secondary hover:theme-text font-mono transition-all duration-200 hover:scale-105 transform"
+                >
                   [{user?.name || 'USER'}]
-                </span>
+                </Link>
                 <button
                   onClick={handleLogout}
                   className="theme-accent hover:theme-hover text-theme-hover-text px-4 py-2 rounded-none border theme-border transition-all duration-200 font-mono font-bold hover:scale-105 transform hover:shadow-lg hover:shadow-theme-accent/25"
