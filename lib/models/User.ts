@@ -28,11 +28,38 @@ const userSchema = new mongoose.Schema({
     state: String,
     zipCode: String,
     country: String
-  },
-  phone: String,
+  },  phone: String,
   isActive: {
     type: Boolean,
     default: true
+  },
+  // Kill Count and Stats
+  killStats: {
+    totalKills: {
+      type: Number,
+      default: 0
+    },
+    preferredWeapons: [{
+      weaponName: String,
+      kills: Number,
+      weaponType: String // handgun, rifle, sniper, etc.
+    }],
+    missionType: {
+      type: String,
+      enum: ['Assassin', 'Military', 'Law Enforcement', 'Hunter', 'Sport Shooter', 'Other'],
+      default: 'Other'
+    },
+    yearsActive: {
+      type: Number,
+      default: 0
+    },
+    location: String,
+    rank: String,
+    achievements: [String],
+    isPublic: {
+      type: Boolean,
+      default: false
+    }
   },
   createdAt: {
     type: Date,
