@@ -149,9 +149,6 @@ export default function Home() {
         <div className="bg-transparent">
           <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
             <div className="text-center">
-              <div className="mb-4">
-                <span className="theme-text font-mono text-sm">root@topguns:~$</span>
-              </div>
               <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl pixel-font cyberpunk-blink" data-text="Welcome to TopGuns">
                 Welcome to <span>TopGuns</span>
               </h1>

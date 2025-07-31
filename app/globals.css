@@ -40,6 +40,17 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   transition: all 0.3s ease;
+  cursor: url('/images/cursor.cur'), auto;
+}
+
+/* Custom bullet cursor for interactive elements */
+button, a, input, select, textarea, [role="button"] {
+  cursor: url('/images/cursor.cur'), pointer;
+}
+
+/* Bullet cursor for all interactive areas */
+.cursor-bullet {
+  cursor: url('/images/cursor.cur'), auto;
 }
 
 /* Theme-aware utility classes */

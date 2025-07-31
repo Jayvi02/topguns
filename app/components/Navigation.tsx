@@ -7,6 +7,8 @@ export default function Navigation() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showFinalConfirmModal, setShowFinalConfirmModal] = useState(false);
 
   useEffect(() => {
     checkAuthStatus();
@@ -23,11 +25,26 @@ export default function Navigation() {
   };
 
   const handleLogout = () => {
+    setShowLogoutModal(true);
+  };
+
+  const confirmLogout = () => {
+    setShowLogoutModal(false);
+    setShowFinalConfirmModal(true);
+  };
+
+  const finalConfirmLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setIsLoggedIn(false);
     setUser(null);
+    setShowFinalConfirmModal(false);
     window.location.href = '/';
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutModal(false);
+    setShowFinalConfirmModal(false);
   };
 
   const handleSearch = (e: React.FormEvent) => {
@@ -39,18 +56,23 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 theme-bg/95 backdrop-blur-sm border-b theme-border/30 transition-all duration-300 hover:theme-bg/98">
+    <>
+      <nav className="fixed top-0 left-0 right-0 z-50 theme-bg/95 backdrop-blur-sm border-b theme-border/30 transition-all duration-300 hover:theme-bg/98">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Left side - Logo */}
           <div className="flex items-center flex-shrink-0">
-            <Link href="/" className="text-xl font-bold theme-text font-mono hover:theme-text-secondary transition-colors duration-200">
-              TopGuns_Firearms.exe
+            <Link href="/" className="flex items-center hover:opacity-80 transition-opacity duration-200">
+              <img 
+                src="/images/logo.png" 
+                alt="TopGuns Firearms" 
+                className="h-36 w-auto"
+              />
             </Link>
           </div>
 
           {/* Center - Search Bar */}
-          <div className="flex-1 flex justify-center max-w-md mx-auto">
+          <div className="flex-1 flex justify-center max-w-md mx-auto absolute left-1/2 transform -translate-x-1/2">
             <form onSubmit={handleSearch} className="relative w-full max-w-sm">
               <div className="relative">
                 <input
@@ -131,5 +153,80 @@ export default function Navigation() {
         </div>
       </div>
     </nav>
+
+    {/* Logout Confirmation Modal */}
+    {showLogoutModal && (
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+        {/* Backdrop */}
+        <div 
+          className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+          onClick={cancelLogout}
+        ></div>
+        
+        {/* Modal */}
+        <div className="relative theme-bg border-2 theme-border p-8 max-w-md mx-4 shadow-2xl">
+          <div className="text-center">
+            <h2 className="text-xl font-bold theme-text font-mono mb-4">
+              [LOGOUT_CONFIRMATION]
+            </h2>
+            <p className="theme-text font-mono mb-8 text-lg">
+              You really wanna leave us bro?
+            </p>
+            <div className="flex space-x-4 justify-center">
+              <button
+                onClick={confirmLogout}
+                className="px-6 py-3 bg-red-900/50 border border-red-500 text-red-300 hover:bg-red-900/70 font-mono font-bold transition-all duration-200 cursor-bullet"
+              >
+                [YES, GOODBYE]
+              </button>
+              <button
+                onClick={cancelLogout}
+                className="px-6 py-3 theme-accent hover:theme-hover text-theme-hover-text border theme-border font-mono font-bold transition-all duration-200 cursor-bullet"
+              >
+                [NAH, STAY]
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* Final Confirmation Modal - 4x Larger */}
+    {showFinalConfirmModal && (
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+        {/* Backdrop */}
+        <div 
+          className="absolute inset-0 bg-black/80 backdrop-blur-md"
+          onClick={cancelLogout}
+        ></div>
+        
+        {/* Large Modal - 4x bigger */}
+        <div className="relative theme-bg border-4 theme-border p-16 max-w-4xl mx-4 shadow-2xl w-full max-h-[80vh]">
+          <div className="text-center">
+            <h2 className="text-4xl font-bold theme-text font-mono mb-8">
+              [FINAL_WARNING]
+            </h2>
+            <p className="theme-text font-mono mb-12 text-3xl">
+              Are you f*cking serious? 😡
+            </p>
+            <div className="flex space-x-8 justify-center">
+              <button
+                onClick={finalConfirmLogout}
+                className="px-12 py-6 bg-red-900/50 border-2 border-red-500 text-red-300 hover:bg-red-900/70 font-mono font-bold text-xl transition-all duration-200 cursor-bullet"
+              >
+                [YES, I'M DEAD SERIOUS]
+              </button>
+              <button
+                onClick={cancelLogout}
+                className="px-12 py-6 theme-accent hover:theme-hover text-theme-hover-text border-2 theme-border font-mono font-bold text-xl transition-all duration-200 cursor-bullet"
+              >
+                [NO, I CHANGED MY MIND]
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 } 

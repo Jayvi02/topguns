@@ -33,6 +33,7 @@ export default function ProfilePage() {
   const [editForm, setEditForm] = useState({ name: '', email: '' });
   const [updateLoading, setUpdateLoading] = useState(false);
   const [isEditingKillStats, setIsEditingKillStats] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [killStatsForm, setKillStatsForm] = useState({
     totalKills: 0,
     missionType: 'Other',
@@ -224,28 +225,111 @@ export default function ProfilePage() {
       {/* Dark overlay to maintain readability */}
       <div className="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
       
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-extrabold theme-text font-mono">
-                [USER_PROFILE]
-              </h1>
-              <p className="mt-2 theme-text-tertiary font-mono text-sm">
-                [ACCOUNT_MANAGEMENT_SYSTEM]
-              </p>
-            </div>
-            <Link
-              href="/"
-              className="theme-text-secondary hover:theme-text font-mono text-sm transition-colors"
+      <div className="flex relative z-20">
+        {/* Mobile Sidebar Toggle */}
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="lg:hidden fixed top-4 left-4 z-30 p-2 theme-accent hover:theme-hover text-theme-hover-text border theme-border font-mono transition-all duration-200"
+        >
+          {sidebarOpen ? '[CLOSE]' : '[MENU]'}
+        </button>
+
+        {/* Sidebar Navigation */}
+        <div className={`w-64 h-screen bg-black/90 backdrop-blur-md border-r theme-border/50 fixed left-0 top-0 flex flex-col transition-transform duration-300 ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        } z-20 cursor-bullet`}>
+          {/* Sidebar Header - Account for navigation bar height */}
+          
+          
+          <div className="flex-1 p-6 overflow-y-auto">
+            <nav className="space-y-4">
+              <Link
+                href="/products"
+                className="flex items-center px-4 py-3 border theme-border theme-text hover:theme-text-secondary hover:bg-gray-800/50 font-mono transition-all duration-200 group cursor-bullet"
+                onClick={() => setSidebarOpen(false)}
+              >
+                <span className="mr-3 group-hover:text-red-400">🔫</span>
+                [BROWSE_FIREARMS]
+              </Link>
+              
+              <Link
+                href="/cart"
+                className="flex items-center px-4 py-3 border theme-border theme-text hover:theme-text-secondary hover:bg-gray-800/50 font-mono transition-all duration-200 group cursor-bullet"
+                onClick={() => setSidebarOpen(false)}
+              >
+                <span className="mr-3 group-hover:text-yellow-400">🛒</span>
+                [VIEW_CART]
+              </Link>
+              
+              <Link
+                href="/"
+                className="flex items-center px-4 py-3 border theme-border theme-text hover:theme-text-secondary hover:bg-gray-800/50 font-mono transition-all duration-200 group cursor-bullet"
+                onClick={() => setSidebarOpen(false)}
+              >
+                <span className="mr-3 group-hover:text-blue-400">🏠</span>
+                [HOME]
+              </Link>
+
+              {user?.killStats?.isPublic && (
+                <Link
+                  href="/#leaderboard"
+                  className="flex items-center px-4 py-3 border theme-border theme-text hover:theme-text-secondary hover:bg-gray-800/50 font-mono transition-all duration-200 group cursor-bullet"
+                  onClick={() => setSidebarOpen(false)}
+                >
+                  <span className="mr-3 group-hover:text-green-400">🏆</span>
+                  [LEADERBOARD]
+                </Link>
+              )}
+            </nav>
+          </div>
+          
+          {/* Logout Button at Bottom */}
+          <div className="p-6 border-t theme-border/50">
+            <button
+              onClick={() => {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                router.push('/');
+              }}
+              className="flex items-center w-full px-4 py-3 bg-red-900/50 border border-red-500 text-red-300 hover:bg-red-900/70 font-mono transition-all duration-200 group cursor-bullet"
             >
-              ← [BACK_TO_HOME]
-            </Link>
+              <span className="mr-3 group-hover:scale-110 transition-transform">⚠️</span>
+              [LOGOUT]
+            </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Overlay for mobile */}
+        {sidebarOpen && (
+          <div
+            className="lg:hidden fixed inset-0 bg-black/50 z-15"
+            onClick={() => setSidebarOpen(false)}
+          ></div>
+        )}
+
+        {/* Main Content Area */}
+        <div className="flex-1 lg:ml-64 px-4 sm:px-6 lg:px-8 pt-16 lg:pt-4 pb-8">
+          {/* Header */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-extrabold theme-text font-mono">
+                  [USER_PROFILE]
+                </h1>
+                <p className="mt-2 theme-text-tertiary font-mono text-sm">
+                  [ACCOUNT_MANAGEMENT_SYSTEM]
+                </p>
+              </div>
+              <Link
+                href="/"
+                className="theme-text-secondary hover:theme-text font-mono text-sm transition-colors"
+              >
+                ← [BACK_TO_HOME]
+              </Link>
+            </div>
+          </div>
+
+        <div className="grid grid-cols-1 gap-8">
           {/* Profile Information */}
           <div>
             <div className="theme-bg/80 backdrop-blur-md border theme-border/50 p-6 shadow-lg">
@@ -666,40 +750,7 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Quick Actions */}
-          <div>
-            <div className="theme-bg/80 backdrop-blur-md border theme-border/50 p-6 shadow-lg">
-              <h3 className="text-lg font-bold theme-text font-mono mb-4">
-                [QUICK_ACTIONS]
-              </h3>
-              <div className="space-y-3">
-                <Link
-                  href="/products"
-                  className="block w-full px-4 py-2 border theme-border theme-text hover:theme-text-secondary font-mono text-center transition-colors"
-                >
-                  [BROWSE_FIREARMS]
-                </Link>
-                <Link
-                  href="/cart"
-                  className="block w-full px-4 py-2 border theme-border theme-text hover:theme-text-secondary font-mono text-center transition-colors"
-                >
-                  [VIEW_CART]
-                </Link>
-                <button
-                  onClick={() => {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('user');
-                    router.push('/');
-                  }}
-                  className="w-full px-4 py-2 bg-red-900/50 border border-red-500 text-red-300 hover:bg-red-900/70 font-mono transition-colors"
-                >
-                  [LOGOUT]
-                </button>
-              </div>
-            </div>
-          </div>
-
+        <div className="mt-8 grid grid-cols-1 gap-8">
           {/* Account Status */}
           <div>
             <div className="theme-bg/80 backdrop-blur-md border theme-border/50 p-6 shadow-lg">
@@ -728,6 +779,7 @@ export default function ProfilePage() {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

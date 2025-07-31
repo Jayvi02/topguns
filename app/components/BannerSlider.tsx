@@ -128,12 +128,6 @@ export default function BannerSlider() {
             {/* Content */}
             <div className="absolute inset-0 flex items-center justify-center px-4 sm:px-6 lg:px-8">
               <div className={`max-w-4xl mx-auto flex flex-col ${getTextAlignment(slide.textPosition)}`}>
-                <div className="mb-4">
-                  <span className="theme-text font-mono text-sm">
-                    root@topguns:~$ banner_{slide.id.toString().padStart(2, '0')}
-                  </span>
-                </div>
-                
                 <h1 className="text-4xl md:text-6xl font-extrabold theme-text font-mono mb-4 tracking-wider">
                   {slide.title}
                 </h1>
